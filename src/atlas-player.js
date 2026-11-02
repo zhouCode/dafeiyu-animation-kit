@@ -39,10 +39,19 @@ export class AtlasPlayer {
     this.baseUrl = new URL(baseUrl, document.baseURI);
     this.clips = new Map(manifest.clips.map(c => [c.id, c]));
     this.images = new Map(); this.pending = new Map(); this.maxCached = maxCached;
+    this.pinned = new Set(); this.preloadEpoch = 0;
+  }
+  prune() {
+    for (const id of this.images.keys()) {
+      if (this.images.size <= this.maxCached) break;
+      if (!this.pinned.has(id)) this.images.delete(id);
+    }
   }
   async load(id) {
     if (!this.clips.has(id)) throw new Error('Unknown clip: '+id);
-    if (this.images.has(id)) return this.images.get(id);
+    if (this.images.has(id)) {
+      const image=this.images.get(id);this.images.delete(id);this.images.set(id,image);return image;
+    }
     if (this.pending.has(id)) return this.pending.get(id);
     const promise = (async () => {
       const clip = this.clips.get(id), image = new Image();
@@ -50,13 +59,23 @@ export class AtlasPlayer {
       await image.decode();
       if (image.width < clip.cols * clip.tileW || image.height < Math.ceil(clip.count / clip.cols) * clip.tileH) throw new Error('Atlas too small: '+id);
       this.images.set(id, image);
-      while (this.images.size > this.maxCached) this.images.delete(this.images.keys().next().value);
+      this.prune();
       return image;
     })();
     this.pending.set(id, promise);
     try { return await promise; } finally { this.pending.delete(id); }
   }
-  async preload(ids) { return Promise.all([...new Set(ids)].map(id => this.load(id))); }
+  async preload(ids) {
+    ids=[...new Set(ids)];
+    if(ids.length>this.maxCached) throw new Error('Sequence exceeds atlas cache budget');
+    const epoch=++this.preloadEpoch;
+    this.pinned=new Set(ids);
+    const images=await Promise.all(ids.map(id=>this.load(id)));
+    if(epoch===this.preloadEpoch) {
+      ids.forEach((id,i)=>{this.images.delete(id);this.images.set(id,images[i]);});
+    }
+    this.prune();return images;
+  }
   draw(ctx, id, seconds, {x = 120, y = 286, rotation = 0, scale = 1, repeat = true, frame} = {}) {
     const clip = this.clips.get(id), image = this.images.get(id);
     if (!clip || !image) return null;

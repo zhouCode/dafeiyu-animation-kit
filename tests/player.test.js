@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
-import {frameAt,frameRect,validateManifest} from '../src/atlas-player.js';
+import {AtlasPlayer,frameAt,frameRect,validateManifest} from '../src/atlas-player.js';
 const manifest=JSON.parse(fs.readFileSync(new URL('../assets/manifest.json',import.meta.url)));
 test('current inventory contains 31 active clips and 3638 frames; no bottom route',()=>{
   validateManifest(manifest);assert.equal(manifest.clips.length,31);
@@ -31,4 +31,29 @@ test('reject malformed manifests and external asset paths',()=>{
 test('waist scale and corrected side offsets are retained',()=>{
   assert.equal(manifest.clips.find(c=>c.id==='grab_waist').displayScale,1.28);
   for(const c of manifest.clips.filter(c=>c.kind==='scene'))assert.equal(c.offset[0],c.id.endsWith('left')?-34:34);
+});
+test('cached idle/landing survive loading an entire six-clip interaction',async()=>{
+  const oldDocument=globalThis.document,oldImage=globalThis.Image;
+  globalThis.document={baseURI:'https://example.com/'};
+  globalThis.Image=class{width=8192;height=8192;async decode(){}};
+  try {
+    const p=new AtlasPlayer(manifest,'./assets/');
+    await p.preload(['idle_calm','grab','grab_waist','land']);
+    const route=['walk_left','emerge_wall_left','retreat_wall_left','jump','idle_calm','land'];
+    await p.preload(route);
+    assert.equal(p.images.size,6);for(const id of route)assert(p.images.has(id),id);
+  } finally {globalThis.document=oldDocument;globalThis.Image=oldImage;}
+});
+test('late results from a cancelled sequence cannot evict the new sequence',async()=>{
+  const oldDocument=globalThis.document,oldImage=globalThis.Image;
+  globalThis.document={baseURI:'https://example.com/'};
+  let unblock;const gate=new Promise(r=>unblock=r);
+  globalThis.Image=class{width=8192;height=8192;async decode(){if(this.src.includes('walk_left'))await gate;}};
+  try {
+    const p=new AtlasPlayer(manifest,'./assets/',3);
+    const old=p.preload(['walk_left','emerge_wall_left','retreat_wall_left']);
+    await p.preload(['grab_waist','land','idle_calm']);
+    unblock();await old;
+    assert.equal(p.images.size,3);for(const id of ['grab_waist','land','idle_calm'])assert(p.images.has(id),id);
+  } finally {globalThis.document=oldDocument;globalThis.Image=oldImage;}
 });
