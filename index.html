@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="zh-CN">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>大肥鱼 · 2D 互动动画库</title><link rel="stylesheet" href="demo/style.css"></head>
+<body>
+<header><a class="brand" href="./">◒ DAFEIYU <span>ANIMATION KIT</span></a><nav><a href="docs/action-overview.webp">动作总览</a><a href="https://github.com/zhouCode/dafeiyu-animation-kit">GitHub ↗</a></nav></header>
+<main>
+<section class="intro"><div><p class="eyebrow">A LITTLE CHARACTER, MANY LITTLE STORIES.</p><h1>让大肥鱼<br><em>住进你的屏幕。</em></h1><p>表情、日常小动作、拎起拖动和墙边探头。<br>一套可以带到网页、桌宠与小屏幕里的 2D 动画。</p></div><div class="stats"><strong>31<span>动画片段</span></strong><strong>3,638<span>透明帧</span></strong><strong>24<span>原生帧 / 秒</span></strong></div></section>
+<section class="workspace">
+<div class="stage-panel"><div class="stage-header"><span class="dot"></span><span id="state" role="status">正在准备动作…</span><button id="reset" type="button">回到待机 ↺</button></div>
+<div class="room" id="room"><canvas id="stage" width="480" height="640" tabindex="0" aria-label="互动角色；空格拎起或松手，方向键移动，Esc恢复"></canvas><span class="room-label">YOUR LITTLE COMPANION</span></div>
+<div class="transport"><button id="pause" type="button" aria-label="暂停播放">暂停</button><input id="timeline" type="range" min="0" max="123" value="0" aria-label="逐帧查看"><output id="frame">0 / 124</output></div>
+<p class="hint">按住角色拖动，松手落地。双击摸头。<br>键盘：空格拎起 / 松手，方向键移动，Esc 恢复。</p></div>
+<aside><p class="eyebrow">TRY AN INTERACTION</p><h2>逗她玩一会儿。</h2>
+<div class="modes"><button class="active" data-grab="grab">直立拎起</button><button data-grab="grab_waist">拎腰弯垂</button></div>
+<div class="routes"><button data-route="left-hide">左边探头 → 缩回</button><button data-route="right-hide">右边探头 → 缩回</button><button data-route="left-jump">左边探头 → 跳回</button><button data-route="right-jump">右边探头 → 跳回</button></div>
+<div class="options"><label><input id="checker" type="checkbox"> 透明背景检查</label><label><input id="auto" type="checkbox"> 自动散步</label></div>
+<p class="small">每段动作可单独查看。拖动、下落和跳回由动画片段与运行时位移组合；探头使用完整出场片段，不是把静态人物平移进来。</p>
+<div class="download"><span>MAKE IT YOURS</span><h3>把她带到你的项目里。</h3><a href="https://github.com/zhouCode/dafeiyu-animation-kit/releases/tag/v0.1.0">下载图集、透明帧和压缩资源 ↗</a></div>
+</aside></section>
+<section class="library"><div class="library-title"><div><p class="eyebrow">THE MOTION LIBRARY</p><h2>每一种小情绪，都在这里。</h2></div><input id="search" type="search" placeholder="搜索动作 / ID" aria-label="搜索动作"></div><div id="filters" class="filters"></div><div id="actions" class="actions"></div><p id="error" role="alert"></p></section>
+<footer>工具代码 MIT · 角色与动画素材沿用参考来源版权声明，未授予通用开源素材许可。<a href="ASSET-NOTICE.md">来源与素材声明</a> · 非官方同人项目</footer>
+</main><script type="module" src="demo/app.js"></script>
+</body></html>

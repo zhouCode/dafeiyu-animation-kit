@@ -1,0 +1,35 @@
+# 动作目录
+
+| ID | 动作 | 帧数 | 秒 | 类型 |
+| --- | --- | ---: | ---: | --- |
+| `idle_calm` | 安静待机 | 124 | 5.17 | sprite |
+| `listen` | 认真听 | 124 | 5.17 | sprite |
+| `think` | 思考 | 124 | 5.17 | sprite |
+| `talk` | 说话 | 124 | 5.17 | sprite |
+| `sleep` | 困倦打盹 | 124 | 5.17 | sprite |
+| `relaxed` | 放松 | 124 | 5.17 | sprite |
+| `curious` | 好奇歪头 | 124 | 5.17 | sprite |
+| `surprise` | 惊讶 | 124 | 5.17 | sprite |
+| `angry` | 生气 | 124 | 5.17 | sprite |
+| `sad` | 难过 | 124 | 5.17 | sprite |
+| `jump` | 开心跳跃 | 124 | 5.17 | sprite |
+| `stretch` | 伸懒腰 | 124 | 5.17 | sprite |
+| `dance` | 跳舞 | 124 | 5.17 | sprite |
+| `tail_play` | 玩尾巴 | 124 | 5.17 | sprite |
+| `glass_press` | 贴玻璃 | 124 | 5.17 | sprite |
+| `chase_fish` | 追小鱼 | 124 | 5.17 | sprite |
+| `retreat_wall_left` | 左侧缩回 | 19 | 0.79 | scene |
+| `retreat_wall_right` | 右侧缩回 | 23 | 0.96 | scene |
+| `happy` | 开心 | 124 | 5.17 | sprite |
+| `shy` | 害羞 | 124 | 5.17 | sprite |
+| `pet` | 摸头 | 124 | 5.17 | sprite |
+| `wave` | 挥手 | 124 | 5.17 | sprite |
+| `idle` | 轻摆待机 | 124 | 5.17 | sprite |
+| `grab` | 直立拎起 | 124 | 5.17 | sprite |
+| `land` | 落地恢复 | 124 | 5.17 | sprite |
+| `grab_waist` | 拎腰弯垂 | 124 | 5.17 | sprite |
+| `emerge_wall_left` | 左侧探头 | 124 | 5.17 | scene |
+| `emerge_wall_right` | 右侧探头 | 124 | 5.17 | scene |
+| `walk_left` | 向左走 | 124 | 5.17 | sprite |
+| `walk_right` | 向右走 | 124 | 5.17 | sprite |
+| `sit` | 坐下休息 | 124 | 5.17 | sprite |

@@ -1,0 +1,10 @@
+{
+  "name": "dafeiyu-animation-kit",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Platform-neutral 2D character animation assets and interaction examples",
+  "scripts": {"test": "node --test tests/player.test.js"},
+  "license": "SEE LICENSE-SCOPE.md",
+  "engines": {"node": ">=20"}
+}
